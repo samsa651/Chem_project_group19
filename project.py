@@ -5,7 +5,7 @@ import math
 def remove_spaces(sentence):
     return ''.join(sentence.split(' '))
 
-
+##Здесь был денчик
 
 s = 'Fe + O2 = Fe2O3'
 s = remove_spaces(s)
