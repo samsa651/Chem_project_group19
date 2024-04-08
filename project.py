@@ -5,7 +5,7 @@ import math
 def remove_spaces(sentence):
     return ''.join(sentence.split(' '))
 
-##Здесь был денчик
+
 
 s = 'Fe + O2 = Fe2O3'
 s = remove_spaces(s)
@@ -20,6 +20,6 @@ for n in left_half_chem:
 for n in right_half_chem:
     right_half_numb.append(chemparse.parse_formula(n))
 
-print('hello world')
+
 
 print(left_half_numb,right_half_numb)
