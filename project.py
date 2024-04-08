@@ -20,5 +20,6 @@ for n in left_half_chem:
 for n in right_half_chem:
     right_half_numb.append(chemparse.parse_formula(n))
 
+print('hello world')
 
 print(left_half_numb,right_half_numb)
