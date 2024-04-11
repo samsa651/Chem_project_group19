@@ -18,8 +18,30 @@ def create_list_of_elements(lft_half, rgt_half):
     return list(a)
 
 
-def create_matrix_equation(lft_half, rgt_half):
-    pass
+def sum_two_lists(first_half, second_half):
+    for i in range(len(second_half)):
+        first_half.append(second_half[i])
+    
+    return first_half
+
+
+
+def create_matrix_equation(lft_half_dt, rgt_half_dt, elements,eqtion):
+
+    lft_half_len = len(lft_half_dt)
+    rght_half_len = len(rgt_half_dt)
+
+    m =[[0 for _ in range(lft_half_len+rght_half_len-1)] for _ in range(len(elements))]
+
+    for i in range(len(elements)):
+        for j in range(lft_half_len+rght_half_len-1):
+            if elements[i] in eqtion[j]:
+                if j < lft_half_len:
+                    m[i][j] = eqtion[j][elements[i]]
+                else:
+                    m[i][j] = -1*eqtion[j][elements[i]]
+
+    return m
 
 
 
@@ -28,7 +50,7 @@ def remove_spaces(sentence):
 
 
 
-s = 'O2 + Fe = Fe2O3'
+s = 'Fe + O2 = Fe2O3'
 s = remove_spaces(s)
 left_half_eq, right_half_eq = s.split('=')
 left_half_chem = left_half_eq.split('+')
@@ -48,4 +70,9 @@ print(left_half_numb, right_half_numb)
 list_of_elem = create_list_of_elements(left_half_numb, right_half_numb)
 
 
+whole_eq = sum_two_lists(left_half_numb, right_half_numb)
+
+matr = create_matrix_equation(left_half_numb, right_half_numb, list_of_elem, whole_eq)
+print(whole_eq)
+print(matr)
 print(list_of_elem)
