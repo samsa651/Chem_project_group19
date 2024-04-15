@@ -4,7 +4,7 @@ import math
 
 def matrix_determinant_sep(matrix_plot, num_of_colum):
     res=[]
-    for i in range(len(matrix_plot)):
+    for i in range(1,len(matrix_plot)):
         part_res =[]
         for j in range(len(matrix_plot)):
             if i != 0 and j != num_of_colum:
@@ -18,7 +18,6 @@ def matrix_determinant_sep(matrix_plot, num_of_colum):
 def separate_matrix(non_sep_matrix):
     right_sep_matrix = []
     left_sep_matrix = []
-    res = 0
 
     for matr_i in non_sep_matrix:
         right_sep_matrix.append(matr_i.pop(-1))
@@ -28,13 +27,14 @@ def separate_matrix(non_sep_matrix):
 
 
 def determinant_of_matrix(matrix_sample):
+    res = 0
     if len(matrix_sample) > 2:
         for i in range(len(matrix_sample)):
-            res += matrix_sample[i]
+            res += matrix_sample[0][i]*(1-(2*(i%2)))*determinant_of_matrix(matrix_determinant_sep(matrix_sample,i))
     else:
         res = matrix_sample[0][0]*matrix_sample[1][1] - matrix_sample[0][1]*matrix_sample[1][0]
     
-    return res
+    return int(res)
 
 
 
@@ -110,10 +110,13 @@ list_of_elem = create_list_of_elements(left_half_numb, right_half_numb)
 
 whole_eq = sum_two_lists(left_half_numb, right_half_numb)
 
-matr = create_matrix_equation(left_half_numb, right_half_numb, list_of_elem, whole_eq)
-print(whole_eq)
-print(matr)
-print(list_of_elem)
-listed_matrix = separate_matrix(matr)
-print(listed_matrix)
-print(matrix_determinant_sep(listed_matrix[0],1))
+matrix_test = [[2, 3, 3, 1], [1, 5, 4, 3], [4, 6, 8, 5], [-2, -3, -3, 4]]
+print(determinant_of_matrix(matrix_test))
+
+
+#matr = create_matrix_equation(left_half_numb, right_half_numb, list_of_elem, whole_eq)
+#print(whole_eq)
+#print(matr)
+#print(list_of_elem)
+#listed_matrix = separate_matrix(matr)
+#print(listed_matrix)
