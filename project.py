@@ -2,6 +2,44 @@ import chemparse
 import math
 
 
+def matrix_determinant_sep(matrix_plot, num_of_colum):
+    res=[]
+    for i in range(len(matrix_plot)):
+        part_res =[]
+        for j in range(len(matrix_plot)):
+            if i != 0 and j != num_of_colum:
+                part_res.append(matrix_plot[i][j])
+        res.append(part_res)
+
+    return res
+
+
+
+def separate_matrix(non_sep_matrix):
+    right_sep_matrix = []
+    left_sep_matrix = []
+    res = 0
+
+    for matr_i in non_sep_matrix:
+        right_sep_matrix.append(matr_i.pop(-1))
+        left_sep_matrix.append(matr_i)
+    return left_sep_matrix , right_sep_matrix
+
+
+
+def determinant_of_matrix(matrix_sample):
+    if len(matrix_sample) > 2:
+        for i in range(len(matrix_sample)):
+            res += matrix_sample[i]
+    else:
+        res = matrix_sample[0][0]*matrix_sample[1][1] - matrix_sample[0][1]*matrix_sample[1][0]
+    
+    return res
+
+
+
+
+
 def create_list_of_elements(lft_half, rgt_half):
     a = set()
     
@@ -76,3 +114,6 @@ matr = create_matrix_equation(left_half_numb, right_half_numb, list_of_elem, who
 print(whole_eq)
 print(matr)
 print(list_of_elem)
+listed_matrix = separate_matrix(matr)
+print(listed_matrix)
+print(matrix_determinant_sep(listed_matrix[0],1))
