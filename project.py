@@ -148,7 +148,7 @@ def find_iverted_matrix(matrix_inv):
 
 
 
-s = 'H2 + O2 = H2O'
+s = 'Fe2SiO4 + Mg2SiO4 + H2O + CO2 = Mg6Si4O18H8 + Fe2O3 + CH4'
 s = remove_spaces(s)
 left_half_eq, right_half_eq = s.split('=')
 left_half_chem = left_half_eq.split('+')
@@ -188,5 +188,10 @@ listed_matrix = separate_matrix(matr)
 print(listed_matrix)
 part_matr = full_multiplication_matrix_on_vector(find_iverted_matrix(listed_matrix[0]),listed_matrix[1])
 print(part_matr, determinant_of_matrix(listed_matrix[0]))
+det = determinant_of_matrix(listed_matrix[0])
+res= multiplication_matrix_on_coefficent(part_matr, det)
+if determinant_of_matrix(listed_matrix[0]) < 0:
+    res= multiplication_matrix_on_coefficent(res, -1)
+    det = det * -1
 
-print(multiplication_matrix_on_coefficent(part_matr, determinant_of_matrix(listed_matrix[0])), determinant_of_matrix(listed_matrix[0]))
+print(*res, float(det))
