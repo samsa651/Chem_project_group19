@@ -13,11 +13,34 @@ def adjusted_of_matrix(matrix_sample_aj):
 
 def multiplication_matrix_on_coefficent(matrix_mult, coeff):
     for i in range(len(matrix_mult)):
-        for j in range(len(matrix_mult)):
-            matrix_mult[i][j] = coeff * matrix_mult[i][j]
+        if type(matrix_mult[i]) is list:
+            for j in range(len(matrix_mult)):
+                matrix_mult[i][j] = coeff * matrix_mult[i][j]
+        else:
+            matrix_mult[i] = coeff * matrix_mult[i]
     
     return matrix_mult  
 
+
+def multiply_matrix_on_vector(matrx_mlt, vector):
+    for i in range(len(vector)):
+        for j in range(len(vector)):
+            matrx_mlt[j][i] = matrx_mlt[j][i]*vector[i]
+    return matrx_mlt
+
+
+def sum_up_matrix_rows(matr_sum):
+    res =[0]*(len(matr_sum))
+    for i in range(len(matr_sum)):
+        row_sum = 0
+        for j in range(len(matr_sum)):
+            row_sum += matr_sum[i][j]
+        res[i] = row_sum
+    return res
+
+
+def full_multiplication_matrix_on_vector(matrx_mlt, vector):
+    return sum_up_matrix_rows(multiply_matrix_on_vector(matrx_mlt, vector))
 
 
 def matrix_determinant_sep(matrix_plot, num_of_colum, num_of_row):
@@ -68,26 +91,30 @@ def matrix_minor_finder(matrix_smpl):
 
 
 def create_list_of_elements(lft_half, rgt_half):
-    a = set()
+    a = []
     
     for i in lft_half:
         lft_keys = list(i.keys())
         for j in lft_keys:
-            a.add(j)
+            if not(j in a):
+                a.append(j)
     
     for i in rgt_half:
         rgt_keys = list(i.keys())
         for j in rgt_keys:
-            a.add(j)
-
-    return list(a)
+            if not(j in a):
+                a.append(j)
+    return a
 
 
 def sum_two_lists(first_half, second_half):
+    res = []
+    for i in range(len(first_half)):
+        res.append(first_half[i])
     for i in range(len(second_half)):
-        first_half.append(second_half[i])
+        res.append(second_half[i])
     
-    return first_half
+    return res
 
 
 
@@ -96,12 +123,13 @@ def create_matrix_equation(lft_half_dt, rgt_half_dt, elements,eqtion):
     lft_half_len = len(lft_half_dt)
     rght_half_len = len(rgt_half_dt)
 
-    m =[[0 for _ in range(lft_half_len+rght_half_len-1)] for _ in range(len(elements))]
-
+    whole_len = len(eqtion)
+    print(whole_len)
+    m =[[0 for _ in range(whole_len)] for _ in range(len(elements))]
     for i in range(len(elements)):
-        for j in range(lft_half_len+rght_half_len-1):
+        for j in range(whole_len):
             if elements[i] in eqtion[j]:
-                if j < lft_half_len:
+                if j < lft_half_len or j == whole_len-1:
                     m[i][j] = eqtion[j][elements[i]]
                 else:
                     m[i][j] = -1*eqtion[j][elements[i]]
@@ -114,8 +142,13 @@ def remove_spaces(sentence):
     return ''.join(sentence.split(' '))
 
 
+def find_iverted_matrix(matrix_inv):
+    return multiplication_matrix_on_coefficent(adjusted_of_matrix(matrix_minor_finder(matrix_inv)), 1/(determinant_of_matrix(matrix_inv)))
 
-s = 'Fe + O2 = Fe2O3'
+
+
+
+s = 'H2 + O2 = H2O'
 s = remove_spaces(s)
 left_half_eq, right_half_eq = s.split('=')
 left_half_chem = left_half_eq.split('+')
@@ -136,15 +169,24 @@ list_of_elem = create_list_of_elements(left_half_numb, right_half_numb)
 
 
 whole_eq = sum_two_lists(left_half_numb, right_half_numb)
-
-matrix_test = [[2, 5, 7], [6, 3, 4], [5, -2, -3]]
+"""
+matrix_test = [[1, 2, -4], [-3, 5, 3], [2, 1, 1]]
+vector_test = [2, 1, 3]
 print(matrix_minor_finder(matrix_test))
 print(determinant_of_matrix(matrix_test), adjusted_of_matrix(matrix_minor_finder(matrix_test)))
+print(find_iverted_matrix(matrix_test))
+print(full_multiplication_matrix_on_vector(matrix_test, vector_test))
+
+"""
 
 
-#matr = create_matrix_equation(left_half_numb, right_half_numb, list_of_elem, whole_eq)
-#print(whole_eq)
-#print(matr)
-#print(list_of_elem)
-#listed_matrix = separate_matrix(matr)
-#print(listed_matrix)
+matr = create_matrix_equation(left_half_numb, right_half_numb, list_of_elem, whole_eq)
+print(whole_eq)
+print(matr)
+print(list_of_elem)
+listed_matrix = separate_matrix(matr)
+print(listed_matrix)
+part_matr = full_multiplication_matrix_on_vector(find_iverted_matrix(listed_matrix[0]),listed_matrix[1])
+print(part_matr, determinant_of_matrix(listed_matrix[0]))
+
+print(multiplication_matrix_on_coefficent(part_matr, determinant_of_matrix(listed_matrix[0])), determinant_of_matrix(listed_matrix[0]))
