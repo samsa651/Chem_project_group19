@@ -2,15 +2,34 @@ import chemparse
 import math
 
 
-def matrix_determinant_sep(matrix_plot, num_of_colum):
+def adjusted_of_matrix(matrix_sample_aj):
+    res = [[0 for _ in range(len(matrix_sample_aj))] for _ in range(len(matrix_sample_aj))]
+    for i in range(len(matrix_sample_aj)):
+        for j in range(len(matrix_sample_aj)):
+            res[i][j] = matrix_sample_aj[j][i]
+    
+    return res
+
+
+def multiplication_matrix_on_coefficent(matrix_mult, coeff):
+    for i in range(len(matrix_mult)):
+        for j in range(len(matrix_mult)):
+            matrix_mult[i][j] = coeff * matrix_mult[i][j]
+    
+    return matrix_mult  
+
+
+
+def matrix_determinant_sep(matrix_plot, num_of_colum, num_of_row):
     res=[]
-    for i in range(1,len(matrix_plot)):
+    
+    for i in range(len(matrix_plot)):
         part_res =[]
         for j in range(len(matrix_plot)):
-            if i != 0 and j != num_of_colum:
+            if i != num_of_row and j != num_of_colum:
                 part_res.append(matrix_plot[i][j])
-        res.append(part_res)
-
+        if i != num_of_row:
+            res.append(part_res)
     return res
 
 
@@ -28,16 +47,24 @@ def separate_matrix(non_sep_matrix):
 
 def determinant_of_matrix(matrix_sample):
     res = 0
-    if len(matrix_sample) > 2:
+    if len(matrix_sample) > 1:
         for i in range(len(matrix_sample)):
-            res += matrix_sample[0][i]*(1-(2*(i%2)))*determinant_of_matrix(matrix_determinant_sep(matrix_sample,i))
+            res += matrix_sample[0][i]*(1-(2*(i%2)))*determinant_of_matrix(matrix_determinant_sep(matrix_sample,i, 0))
     else:
-        res = matrix_sample[0][0]*matrix_sample[1][1] - matrix_sample[0][1]*matrix_sample[1][0]
+        res = matrix_sample[0][0]
     
     return int(res)
 
 
+def matrix_minor_finder(matrix_smpl):
+    matr_res =[]
 
+    for i in range(len(matrix_smpl)):
+        part_matr_res =[]
+        for j in range(len(matrix_smpl)):
+            part_matr_res.append(determinant_of_matrix(matrix_determinant_sep(matrix_smpl,j,i))*(1-(2*((i+(j%2))%2))))
+        matr_res.append(part_matr_res)
+    return matr_res
 
 
 def create_list_of_elements(lft_half, rgt_half):
@@ -110,8 +137,9 @@ list_of_elem = create_list_of_elements(left_half_numb, right_half_numb)
 
 whole_eq = sum_two_lists(left_half_numb, right_half_numb)
 
-matrix_test = [[2, 3, 3, 1], [1, 5, 4, 3], [4, 6, 8, 5], [-2, -3, -3, 4]]
-print(determinant_of_matrix(matrix_test))
+matrix_test = [[2, 5, 7], [6, 3, 4], [5, -2, -3]]
+print(matrix_minor_finder(matrix_test))
+print(determinant_of_matrix(matrix_test), adjusted_of_matrix(matrix_minor_finder(matrix_test)))
 
 
 #matr = create_matrix_equation(left_half_numb, right_half_numb, list_of_elem, whole_eq)
