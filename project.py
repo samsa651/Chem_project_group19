@@ -124,7 +124,7 @@ def create_matrix_equation(lft_half_dt, rgt_half_dt, elements,eqtion):
     rght_half_len = len(rgt_half_dt)
 
     whole_len = len(eqtion)
-    print(whole_len)
+
     m =[[0 for _ in range(whole_len)] for _ in range(len(elements))]
     for i in range(len(elements)):
         for j in range(whole_len):
@@ -148,7 +148,7 @@ def find_iverted_matrix(matrix_inv):
 
 
 
-s = 'Fe2SiO4 + Mg2SiO4 + H2O + CO2 = Mg6Si4O18H8 + Fe2O3 + CH4'
+s = 'Fe2SiO4 + Mg2SiO4 + H2O + CO2 = Mg6Si4O18H8 + Fe2O3 + CH4' # This is input line
 s = remove_spaces(s)
 left_half_eq, right_half_eq = s.split('=')
 left_half_chem = left_half_eq.split('+')
@@ -163,7 +163,7 @@ for i in left_half_chem:
 for i in right_half_chem:
     right_half_numb.append(chemparse.parse_formula(i))
 
-print(left_half_numb, right_half_numb)
+#print(left_half_numb, right_half_numb)
 
 list_of_elem = create_list_of_elements(left_half_numb, right_half_numb)
 
@@ -181,17 +181,17 @@ print(full_multiplication_matrix_on_vector(matrix_test, vector_test))
 
 
 matr = create_matrix_equation(left_half_numb, right_half_numb, list_of_elem, whole_eq)
-print(whole_eq)
-print(matr)
-print(list_of_elem)
+#print(whole_eq)
+#print(matr)
+#print(list_of_elem)
 listed_matrix = separate_matrix(matr)
-print(listed_matrix)
+#print(listed_matrix)
 part_matr = full_multiplication_matrix_on_vector(find_iverted_matrix(listed_matrix[0]),listed_matrix[1])
-print(part_matr, determinant_of_matrix(listed_matrix[0]))
+#print(part_matr, determinant_of_matrix(listed_matrix[0]))
 det = determinant_of_matrix(listed_matrix[0])
 res= multiplication_matrix_on_coefficent(part_matr, det)
 if determinant_of_matrix(listed_matrix[0]) < 0:
     res= multiplication_matrix_on_coefficent(res, -1)
     det = det * -1
-
+print(s)
 print(*res, float(det))
